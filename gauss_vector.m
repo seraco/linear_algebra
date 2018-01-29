@@ -1,4 +1,4 @@
-function gv = upper_gauss_vector(A,m,n)
+function gv = gauss_vector(A,m,n)
 % The function constructs the Gauss vector of a given step of Gauss elimination method.
 % A - the coefficient matrix
 % m - the step number of Gauss elimination

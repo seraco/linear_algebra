@@ -15,8 +15,8 @@ end
 end
 
 for k=1:n-1 % the main loop of the GEM starts here
-gv = upper_gauss_vector(U,k,n); % the first step in GEM is to construct Gauss vector
-evec = upper_e_vector(k,n); %second, I construct my e vector for the corresponding stage of the GEM
+gv = gauss_vector(U,k,n); % the first step in GEM is to construct Gauss vector
+evec = e_vector(k,n); %second, I construct my e vector for the corresponding stage of the GEM
 LE = outer_product(gv,evec,n); %Here, I take outer product between the Gauss and e vectors for the given stage
 J = matrix_subtraction(I,LE,n); %Here, I construct my Gauss transformation matrix by subtracting the previously computed outer product from the identity matrix
 U = matrix_matrix_mult(J,U,n); %Here, I compute the updated upper-triangular matrix through matrix multiplication with the Gauss transformation matrix.

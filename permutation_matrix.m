@@ -14,8 +14,8 @@ end
 end
 end
 
-e1=upper_e_vector(i1,n);
-e2=upper_e_vector(i2,n);
+e1=e_vector(i1,n);
+e2=e_vector(i2,n);
 e2me1=vector_subtraction(e2,e1,n);
 e2me1T=transpose_matrix(e2me1,1,n);
 out_prd=outer_product(e2me1T,e2me1,n);

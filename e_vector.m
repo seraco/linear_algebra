@@ -1,4 +1,4 @@
-function evec = upper_e_vector(m,n)
+function evec = e_vector(m,n)
 % This function constructs the e evector for the given Gauss elimination step
 % m - the step number of Gauss elimination method
 % n - the size of the matrix A
