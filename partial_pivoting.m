@@ -1,4 +1,4 @@
-function [P,L,U] = partial_pivoting(A,b,n)
+function [P,L,U] = partial_pivoting(A,n)
 % The function computes the upper triangularisation of a given square matrix A using the Gauss elimination method (GEM).
 % A - the coefficient matrix
 % b - RHS of equation Ax=b
