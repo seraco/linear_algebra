@@ -4,6 +4,7 @@ function x = gauss_elimination(A,b,n)
 % b - RHS of equation Ax=b
 % n - the size of the matrix A
 
-[~,L,U,c] = partial_pivoting(A,b,n);
+[P,L,U]=partial_pivoting(A,b,n);
+c=matrix_vector_mult(P,b,n);
 y=forward_substitution(L,c,n);
 x=backward_substitution(U,y,n);
