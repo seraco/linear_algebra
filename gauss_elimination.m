@@ -1,5 +1,5 @@
 function x = gauss_elimination(A,b,n)
-% The function solves a system of equations with Gauss elimination method (GEM).
+% The function solves a system of equations with Gauss elimination method (GEM) with partial pivoting.
 % A - the coefficient matrix
 % b - RHS of equation Ax=b
 % n - the size of the matrix A

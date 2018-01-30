@@ -1,7 +1,6 @@
 function [P,L,U] = partial_pivoting(A,n)
-% The function computes the upper triangularisation of a given square matrix A using the Gauss elimination method (GEM).
-% A - the coefficient matrix
-% b - RHS of equation Ax=b
+% The function decomposes matrix A in L-U matrices with partial pivoting
+% A - the input matrix
 % n - the size of the matrix A
 
 for i=1:n

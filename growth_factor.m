@@ -1,4 +1,8 @@
 function rho = growth_factor(A,n)
+% The function computes growth factor of matrix A
+% A - the input matrix
+% n - the size of the matrix A
+
 U=upper_triangularisation(A,n);
 max_A=0.0;
 max_U=0.0;
