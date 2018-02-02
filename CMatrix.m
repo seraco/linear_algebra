@@ -119,6 +119,47 @@ classdef CMatrix
             end
             res = CMatrix(res);
         end
+        function res = getRow(obj,i)
+            res = zeros(1,obj.nColumns);
+            for j=1:obj.nColumns
+                res(1,j) = obj.data(i,j);
+            end
+        end
+        function res = getColumn(obj,j)
+            res = zeros(obj.mRows,1);
+            for i=1:obj.nColumns
+                res(i,1) = obj.data(i,j);
+            end
+        end
+    end
+    
+    methods(Static)
+        function res = identityMatrix(n)
+            res = zeros(n,n);
+            for i=1:n
+                for j=1:n
+                    if(i == j)
+                        res(i,j) = 1.0;
+                    else
+                        res(i,j) = 0.0;
+                    end
+                end
+            end
+            res = CMatrix(res);
+        end
+        function res = permutationMatrix(i1,i2,n)
+            identity = CMatrix.identityMatrix(n);
+            e1 = CVector(identity.getColumn(i1));
+            e2 = CVector(identity.getColumn(i2));
+            e2me1 = e2-e1;
+            outerProduct = e2me1*e2me1;
+            res = zeros(n,n);
+            for i=1:n
+                for j=1:n
+                    res(i,j) = identity.data(i,j)-outerProduct.data(i,j);
+                end
+            end
+        end
     end
     
 end
