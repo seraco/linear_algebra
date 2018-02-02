@@ -69,6 +69,21 @@ classdef CVector
                 error(msg);
             end
         end
+        function res = getSubvector(obj,i1,i2)
+            res = zeros(i2-i1,1);
+            for i=i1:i2
+                res(i+1-i1) = obj.data(i,1);
+            end
+            res = CVector(res);
+        end
+        function res = maxElementIndex(obj)
+            res = 1;
+            for i=1:obj.nElements
+                if(obj.data(i) > obj.data(res))
+                    res = i;
+                end
+            end
+        end
     end
     
 end

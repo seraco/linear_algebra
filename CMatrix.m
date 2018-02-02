@@ -124,12 +124,29 @@ classdef CMatrix
             for j=1:obj.nColumns
                 res(1,j) = obj.data(i,j);
             end
+            res = CVector(res);
         end
         function res = getColumn(obj,j)
             res = zeros(obj.mRows,1);
             for i=1:obj.nColumns
                 res(i,1) = obj.data(i,j);
             end
+            res = CVector(res);
+        end
+        function res = swapSubrows(obj,i1,i2,j1,j2)
+            res = obj.data;
+            for j=j1:j2
+                res(i1,j)=obj.data(i2,j);
+                res(i2,j)=obj.data(i1,j);
+            end
+            res = CMatrix(res);
+        end
+        function res = gaussVector(obj,k)
+            res = zeros(obj.mRows-k,1);
+            for i=k+1:obj.mRows
+                res(i) = obj.data(i,k)/obj.data(k,k);
+            end
+            res = CVector(res);
         end
     end
     
@@ -149,8 +166,8 @@ classdef CMatrix
         end
         function res = permutationMatrix(i1,i2,n)
             identity = CMatrix.identityMatrix(n);
-            e1 = CVector(identity.getColumn(i1));
-            e2 = CVector(identity.getColumn(i2));
+            e1 = identity.getColumn(i1);
+            e2 = identity.getColumn(i2);
             e2me1 = e2-e1;
             outerProduct = e2me1*e2me1;
             res = zeros(n,n);
@@ -159,6 +176,7 @@ classdef CMatrix
                     res(i,j) = identity.data(i,j)-outerProduct.data(i,j);
                 end
             end
+            res = CMatrix(res);
         end
     end
     
