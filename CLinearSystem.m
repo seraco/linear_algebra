@@ -43,6 +43,7 @@ classdef CLinearSystem
                 end
                 res(i)=(obj.b.data(i)-res(i))/obj.A.data(i,i);
             end
+            res = CVector(res);
         end
         function res = forwardSubstitution(obj)
             if(~obj.A.isLowerTriangular)
@@ -57,6 +58,7 @@ classdef CLinearSystem
                 end
                 res(i)=(obj.b.data(i)-res(i))/obj.A.data(i,i);
             end
+            res = CVector(res);
         end
         function [P,L,U] = luWithPartialPivoting(obj)
             L = CMatrix.identityMatrix(obj.A.mRows);
@@ -72,13 +74,50 @@ classdef CLinearSystem
                 P = permutation*P;
                 U = U.swapSubrows(iMax,k,k,obj.A.mRows);
                 L = L.swapSubrows(iMax,k,1,k-1);
-                gv = U.gaussVector(k);
+                gv = CLinearSystem.gaussVector(U,k);
                 e = I.getColumn(k);
                 LE = gv*e;
                 J = I-LE;
                 U = J*U;
                 L = L+LE;
             end
+        end
+        function res = growthFactor(obj)
+            [~,~,U] = luWithPartialPivoting(obj);
+            maxA=0.0;
+            maxU=0.0;
+            for i=1:obj.A.mRows
+                for j=1:obj.A.mRows
+                    absA = abs(obj.A.data(i,j));
+                    absU = abs(U.data(i,j));
+                    if(absA > maxA)
+                        maxA = absA;
+                    end
+                    if(absU > maxU)
+                        maxU = absU;
+                    end
+                end
+            end
+            res = maxU/maxA;
+        end
+        function res = gaussElimination(obj)
+            [P,L,U] = luWithPartialPivoting(obj);
+            rhs = CMatrix(obj.b.data);
+            c = P*rhs;
+            firstSystem = CLinearSystem(L.data,c.data);
+            y = firstSystem.forwardSubstitution();
+            secondSystem = CLinearSystem(U.data,y.data);
+            res = secondSystem.backwardSubstitution();
+        end
+    end
+    
+    methods(Static)
+        function res = gaussVector(matrix,k)
+            res = zeros(matrix.mRows-k,1);
+            for i=k+1:matrix.mRows
+                res(i) = matrix.data(i,k)/matrix.data(k,k);
+            end
+            res = CVector(res);
         end
     end
     

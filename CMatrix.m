@@ -141,13 +141,6 @@ classdef CMatrix
             end
             res = CMatrix(res);
         end
-        function res = gaussVector(obj,k)
-            res = zeros(obj.mRows-k,1);
-            for i=k+1:obj.mRows
-                res(i) = obj.data(i,k)/obj.data(k,k);
-            end
-            res = CVector(res);
-        end
     end
     
     methods(Static)
