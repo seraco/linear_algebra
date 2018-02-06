@@ -65,6 +65,18 @@ classdef CUnidimensionalDiffusion
             end
             res = concentrationN;
         end
+        function res = analyticalSolution(obj,x,t)
+            Co = obj.initialConcentration;
+            n = 100;
+            D = obj.diffusivity;
+            L = obj.lSize;
+            res = 0.0;
+            for i=1:n
+                factor = (2*i-1)*pi;
+                res = res+1/factor*exp(-(D*factor^2*t/L^2))*sin(factor*x/L);
+            end
+            res = 4*Co*res;
+        end
     end
 
     methods(Static)
