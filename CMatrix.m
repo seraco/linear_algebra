@@ -125,7 +125,6 @@ classdef CMatrix
             end
             res = true;
         end
-        
         function res = isTridiagonal(obj)
             if (obj.mRows ~= obj.nColumns)
                 res = false;
@@ -175,6 +174,41 @@ classdef CMatrix
             for j=j1:j2
                 res(i1,j)=obj.data(i2,j);
                 res(i2,j)=obj.data(i1,j);
+            end
+            res = CMatrix(res);
+        end
+        function res = getDiagonal(obj)
+            if (obj.mRows ~= obj.nColumns)
+                error('Number of rows and columns should be equal.')
+            end
+            res = zeros(obj.mRows,obj.nColumns);
+            for i=1:obj.mRows
+                res(i,i) = obj.data(i,i);
+            end
+            res = CMatrix(res);
+        end
+        function res = getLower(obj)
+            if (obj.mRows ~= obj.nColumns)
+                error('Number of rows and columns should be equal.')
+            end
+            res = zeros(obj.mRows,obj.nColumns);
+            for i=1:obj.mRows
+                for j=1:i-1
+                    res(i,j) = obj.data(i,j);
+                end
+            end
+            res = CMatrix(res);
+        end
+        
+        function res = getUpper(obj)
+            if (obj.mRows ~= obj.nColumns)
+                error('Number of rows and columns should be equal.')
+            end
+            res = zeros(obj.mRows,obj.nColumns);
+            for j=1:obj.nColumns
+                for i=1:j-1
+                    res(i,j) = obj.data(i,j);
+                end
             end
             res = CMatrix(res);
         end

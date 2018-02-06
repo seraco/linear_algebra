@@ -214,6 +214,29 @@ classdef CLinearSystem
             secondSystem = CLinearSystem(U.data,y.data);
             res = secondSystem.tridiagonalBackwardSubstitution();
         end
+        function res = iterativeSolution(obj,type)
+            switch type
+                case 'jacobi'
+                    res = jacobiMethod(obj);
+                otherwise
+                    error('Unknown decomposition type.');
+            end
+        end
+        function res = jacobiMethod(obj,initialGuess)
+            convergenceError = 0.00001;
+            D = obj.A.getDiagonal;
+            L = obj.A.getLower;
+            U = obj.A.getUpper;
+            LU = L+U;
+            rhs = obj.b;
+            xK = initialGuess;
+            while true
+                xK1 = rhs-LU*xK;
+                if(abs(xK1-xK) < convergenceError)
+                    break;
+                end
+            end
+        end
     end
     
     methods(Static)
