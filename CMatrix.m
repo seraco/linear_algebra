@@ -110,6 +110,43 @@ classdef CMatrix
             end
             res = true;
         end
+        function res = isSymmetric(obj)
+            if (obj.mRows ~= obj.nColumns)
+                res = false;
+                return;
+            end
+            for i=1:obj.mRows
+                for j=i:obj.nColumns
+                    if(obj.data(i,j) ~= obj.data(j,i))
+                        res = false;
+                        return;
+                    end
+                end
+            end
+            res = true;
+        end
+        
+        function res = isTridiagonal(obj)
+            if (obj.mRows ~= obj.nColumns)
+                res = false;
+                return;
+            end
+            for i=1:obj.mRows
+                for j=1:i-2
+                    if(obj.data(i,j) ~= 0)
+                        res = false;
+                        return;
+                    end
+                end
+                for j=i+2:obj.nColumns
+                    if(obj.data(i,j) ~= 0)
+                        res = false;
+                        return;
+                    end
+                end
+            end
+            res = true;
+        end
         function res = transpose(obj)
             res = zeros(obj.nColumns,obj.mRows);
             for i=1:obj.mRows

@@ -1,6 +1,6 @@
-function A = buildInitalA(n)
+function A = BuildInitalA(n)
 % The function builds an initial matrix of the form
-%       A=[
+%       A = [
 %            1  0  0  0  0  1
 %           -1  1  0  0  0  1
 %           -1 -1  1  0  0  1
@@ -10,16 +10,17 @@ function A = buildInitalA(n)
 %       ]
 % n - the size of the matrix A
 
+A = zeros(n,n);
 for i=1:n
     for j=1:n
-        if(j==n)
+        if(j == n)
+            A(i,j) = 1.0;
+        elseif(i == j)
             A(i,j)=1.0;
-        elseif(i==j)
-            A(i,j)=1.0;
-        elseif(i>j)
-            A(i,j)=-1.0;
+        elseif(i > j)
+            A(i,j) = -1.0;
         else
-            A(i,j)=0.0;
+            A(i,j) = 0.0;
         end
     end
 end

@@ -70,6 +70,10 @@ classdef CVector
             end
         end
         function res = getSubvector(obj,i1,i2)
+            if(i2 < i1)
+                res = CVector([]);
+                return
+            end
             res = zeros(i2-i1,1);
             for i=i1:i2
                 res(i+1-i1) = obj.data(i,1);
@@ -83,6 +87,15 @@ classdef CVector
                     res = i;
                 end
             end
+        end
+        function res = maxElement(obj)
+            res = 1;
+            for i=1:obj.nElements
+                if(obj.data(i) > obj.data(res))
+                    res = i;
+                end
+            end
+            res = obj.data(i);
         end
     end
     
