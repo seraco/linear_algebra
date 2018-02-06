@@ -131,23 +131,23 @@ classdef CLinearSystem
             res = maxU/maxA;
         end
         function res = directSolution(obj,type)
+            rhs = CMatrix(obj.b.data);
             switch type
                 case 'lu'
                     [P,L,U] = luWithPartialPivoting(obj);
+                    c = P*rhs;
                 case 'cholesky'
-                    % TODO: P is not needed
-                    [P,L,U] = choleskyDecomposition(obj);
+                    [L,U] = choleskyDecomposition(obj);
+                    c = rhs;
                 otherwise
                     error('Unknown decomposition type.');
             end
-            rhs = CMatrix(obj.b.data);
-            c = P*rhs;
             firstSystem = CLinearSystem(L.data,c.data);
             y = firstSystem.forwardSubstitution();
             secondSystem = CLinearSystem(U.data,y.data);
             res = secondSystem.backwardSubstitution();
         end
-        function [P,L,U] = choleskyDecomposition(obj)
+        function [L,U] = choleskyDecomposition(obj)
             msg = 'Matrix of coefficients should be symmetric.';
             if(~obj.A.isSymmetric)
                 error(msg);
@@ -176,7 +176,6 @@ classdef CLinearSystem
                 U.data(j,j) = sqrt(s);
             end
             L = U.transpose;
-            P = CMatrix.identityMatrix(mRows);
         end
         function [L,U] = tridiagonalCholesky(obj)
             msg = 'Matrix of coefficients should be symmetric.';
