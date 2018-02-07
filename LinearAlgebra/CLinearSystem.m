@@ -214,38 +214,37 @@ classdef CLinearSystem
             secondSystem = CLinearSystem(U.data,y.data);
             res = secondSystem.tridiagonalBackwardSubstitution();
         end
-        function res = iterativeSolution(obj,type,initialGuess)
+        function res = iterativeSolution(obj,type,tolerance)
             switch type
                 case 'jacobi'
-                    res = jacobiMethod(obj,initialGuess);
+                    res = jacobiMethod(obj,tolerance);
                 otherwise
                     error('Unknown decomposition type.');
             end
         end
-        function res = jacobiMethod(obj,initialGuess)
-            convergenceError = 0.00001;
-            initGuess = CVector(initialGuess);
-            msg = ['The size of the initial guess does not agree '...
-                   'with the size of the matrix of coefficients.'];
-            if(obj.b.nElements ~= initGuess.nElements)
-                error(msg)
-            end
+        function res = jacobiMethod(obj,tolerance)
+            convergenceError = tolerance;
+            initGuess = CVector(obj.b.data);
             Dinv = obj.A.getDiagonalInverse;
             L = obj.A.getLower;
             U = obj.A.getUpper;
             LplusU = L+U;
             rhs = CMatrix(obj.b.data);
             xK = CMatrix(initGuess.data);
-            while true
-                res = Dinv*(rhs-LplusU*xK);
+            res = CMatrix(zeros(obj.b.nElements,1));
+            while(true)
+                factor = rhs-LplusU*xK;
+                for i=1:obj.b.nElements
+                    res.data(i,1) = Dinv.data(i,i)*factor.data(i,1);
+                end
                 err = res-xK;
                 maxErrorMagnitude = err.findMaximumMagnitude;
-                disp(maxErrorMagnitude)
                 if(maxErrorMagnitude < convergenceError)
                     break;
                 end
                 xK = res;
             end
+            res = CVector(res.data);
         end
     end
     

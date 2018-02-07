@@ -83,15 +83,17 @@ classdef CVector
         function res = maxElementIndex(obj)
             res = 1;
             for i=1:obj.nElements
-                if(obj.data(i) > obj.data(res))
+                absElement = abs(obj.data(i));
+                if(absElement > obj.data(res))
                     res = i;
                 end
             end
         end
-        function res = maxElement(obj)
+        function res = maxElementMagnitude(obj)
             res = 1;
             for i=1:obj.nElements
-                if(obj.data(i) > obj.data(res))
+                absElement = abs(obj.data(i));
+                if(absElement > obj.data(res))
                     res = i;
                 end
             end

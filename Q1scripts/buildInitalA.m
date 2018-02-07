@@ -1,4 +1,4 @@
-function A = BuildInitalA(n)
+function A = buildInitalA(n)
 % The function builds an initial matrix of the form
 %       A = [
 %            1  0  0  0  0  1

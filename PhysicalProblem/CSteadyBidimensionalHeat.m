@@ -29,22 +29,25 @@ classdef CSteadyBidimensionalHeat
             nVerLeft = 2*obj.nVerticalDivisions-1;
             nHorRight = obj.nHoritzontalDivisions;
             nVerRight = obj.nVerticalDivisions-1;
+            c1 = 1/deltaXsquared;
+            c2 = 1/deltaYsquared;
+            c3 = -2*(c1+c2);
             res = sparse(nHorLeft*nVerLeft+nHorRight*nVerRight);
             for j=1:nHorLeft
                 for i=1:nVerLeft
                     k = (j-1)*(nVerLeft)+i;
-                    res(k,k) = -2/deltaXsquared-2/deltaYsquared;
+                    res(k,k) = c3;
                     if(i ~= 1)
-                        res(k,k-1) = 1/deltaYsquared;
+                        res(k,k-1) = c2;
                     end
                     if(i ~= nVerLeft)
-                        res(k,k+1) = 1/deltaYsquared;
+                        res(k,k+1) = c2;
                     end
                     if(j ~= 1)
-                        res(k,k-nVerLeft) = 1/deltaXsquared;
+                        res(k,k-nVerLeft) = c1;
                     end
                     if(j ~= nHorLeft)
-                        res(k,k+nVerLeft) = 1/deltaXsquared;
+                        res(k,k+nVerLeft) = c1;
                     end
                 end
             end
@@ -52,16 +55,16 @@ classdef CSteadyBidimensionalHeat
             for j=1:nHorRight
                 for i=1:nVerRight
                     k = kTotalLeft+(j-1)*(nVerRight)+i;
-                    res(k,k) = -2/deltaXsquared-2/deltaYsquared;
-                    res(k,k-nVerRight) = 1/deltaXsquared;
+                    res(k,k) = c3;
+                    res(k,k-nVerRight) = c1;
                     if(i ~= 1)
-                        res(k,k-1) = 1/deltaYsquared;
+                        res(k,k-1) = c2;
                     end
                     if(i ~= nVerRight)
-                        res(k,k+1) = 1/deltaYsquared;
+                        res(k,k+1) = c2;
                     end
                     if(j ~= nHorRight)
-                        res(k,k+nVerRight) = 1/deltaXsquared;
+                        res(k,k+nVerRight) = c1;
                     end
                 end
             end
@@ -69,7 +72,8 @@ classdef CSteadyBidimensionalHeat
         function res = solve(obj)
             A = coefficientsMatrix(obj);
             b = obj.appliedHeat*ones(size(A,1),1);
-            res = b;
+            sys = CLinearSystem(A,b);
+            res = sys.iterativeSolution('jacobi',0.000001);
         end
     end
 

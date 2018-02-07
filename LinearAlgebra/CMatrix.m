@@ -181,44 +181,74 @@ classdef CMatrix
             if (obj.mRows ~= obj.nColumns)
                 error('Number of rows and columns should be equal.')
             end
-            res = zeros(obj.mRows,obj.nColumns);
+            iIndices = zeros(obj.mRows,1);
+            jIndices = zeros(obj.mRows,1);
+            values = zeros(obj.mRows,1);
             for i=1:obj.mRows
-                res(i,i) = obj.data(i,i);
+                iIndices(i) = i;
+                jIndices(i) = i;
+                values(i) = obj.data(i,i);
             end
+            res = sparse(iIndices,jIndices,values);
             res = CMatrix(res);
         end
         function res = getDiagonalInverse(obj)
             if (obj.mRows ~= obj.nColumns)
                 error('Number of rows and columns should be equal.')
             end
-            res = zeros(obj.mRows,obj.nColumns);
+            iIndices = zeros(obj.mRows,1);
+            jIndices = zeros(obj.mRows,1);
+            values = zeros(obj.mRows,1);
             for i=1:obj.mRows
-                res(i,i) = 1/obj.data(i,i);
+                iIndices(i) = i;
+                jIndices(i) = i;
+                values(i) = 1/obj.data(i,i);
             end
+            res = sparse(iIndices,jIndices,values);
             res = CMatrix(res);
         end
         function res = getLower(obj)
             if (obj.mRows ~= obj.nColumns)
                 error('Number of rows and columns should be equal.')
             end
-            res = zeros(obj.mRows,obj.nColumns);
+            iIndices = zeros(obj.mRows,1);
+            jIndices = zeros(obj.mRows,1);
+            values = zeros(obj.mRows,1);
+            k = 0;
             for i=1:obj.mRows
                 for j=1:i-1
-                    res(i,j) = obj.data(i,j);
+                    k = k+1;
+                    iIndices(k) = i;
+                    jIndices(k) = j;
+                    values(k) = obj.data(i,j);
                 end
             end
+            iIndices(k+1) = obj.nColumns;
+            jIndices(k+1) = obj.nColumns;
+            values(k+1) = 0;
+            res = sparse(iIndices,jIndices,values);
             res = CMatrix(res);
         end
         function res = getUpper(obj)
             if (obj.mRows ~= obj.nColumns)
                 error('Number of rows and columns should be equal.')
             end
-            res = zeros(obj.mRows,obj.nColumns);
+            iIndices = zeros(obj.mRows,1);
+            jIndices = zeros(obj.mRows,1);
+            values = zeros(obj.mRows,1);
+            k = 0;
             for j=1:obj.nColumns
                 for i=1:j-1
-                    res(i,j) = obj.data(i,j);
+                    k = k+1;
+                    iIndices(k) = i;
+                    jIndices(k) = j;
+                    values(k) = obj.data(i,j);
                 end
             end
+            iIndices(k+1) = obj.nColumns;
+            jIndices(k+1) = obj.nColumns;
+            values(k+1) = 0;
+            res = sparse(iIndices,jIndices,values);
             res = CMatrix(res);
         end
         function res = findMaximumMagnitude(obj)
