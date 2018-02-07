@@ -62,8 +62,8 @@ classdef CUnidimensionalDiffusion
                 concentrationN1 = sys.tridiagonalDirectSolution();
                 concentrationN1 = boundaryConditions(obj,concentrationN1);
                 concentrationN = concentrationN1;
+                res(i) = concentrationN;
             end
-            res = concentrationN;
         end
         function res = analyticalSolution(obj,x,t)
             Co = obj.initialConcentration;
@@ -76,6 +76,8 @@ classdef CUnidimensionalDiffusion
                 res = res+1/factor*exp(-(D*factor^2*t/L^2))*sin(factor*x/L);
             end
             res = 4*Co*res;
+        end
+        function compareSolutions(obj)
         end
     end
 

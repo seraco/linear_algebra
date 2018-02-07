@@ -1,4 +1,4 @@
-%% Script to solve the first question.
+%% Script to solve Question 1.
 %   The question is about Gaussian elimination with partial pivoting PA=LU.
 %   This script computes P,L,U matrices and solves a system of equation
 %   using this information. Then, it also studies the influence of the
@@ -8,10 +8,9 @@
 % Version:  0.0.1
 % Author:   S.Ramon
 
-oldpath = path;
-path('../LinearAlgebra',oldpath);
+addpath('../LinearAlgebra');
 
-%% iii
+%% 3)
 A = buildInitalA(5);
 b = [2 1 0 -1 -3];
 
@@ -22,7 +21,7 @@ x = sys.directSolution('lu');
 fprintf('iii part solved. The answers can be checked.\n');
 pause;
 
-%% iv
+%% 4)
 rho = zeros(3,1);
 k = 0;
 
@@ -37,7 +36,7 @@ end
 fprintf('iv part solved. The answers can be checked.\n');
 pause;
 
-%% v
+%% 5)
 parameter1 = zeros(3,1);
 parameter2 = zeros(3,1);
 k = 0;
