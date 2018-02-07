@@ -187,6 +187,16 @@ classdef CMatrix
             end
             res = CMatrix(res);
         end
+        function res = getDiagonalInverse(obj)
+            if (obj.mRows ~= obj.nColumns)
+                error('Number of rows and columns should be equal.')
+            end
+            res = zeros(obj.mRows,obj.nColumns);
+            for i=1:obj.mRows
+                res(i,i) = 1/obj.data(i,i);
+            end
+            res = CMatrix(res);
+        end
         function res = getLower(obj)
             if (obj.mRows ~= obj.nColumns)
                 error('Number of rows and columns should be equal.')
@@ -199,7 +209,6 @@ classdef CMatrix
             end
             res = CMatrix(res);
         end
-        
         function res = getUpper(obj)
             if (obj.mRows ~= obj.nColumns)
                 error('Number of rows and columns should be equal.')
@@ -211,6 +220,17 @@ classdef CMatrix
                 end
             end
             res = CMatrix(res);
+        end
+        function res = findMaximumMagnitude(obj)
+            res = 0;
+            for i=1:obj.mRows
+                for j=1:obj.nColumns
+                    absElement = abs(obj.data(i,j));
+                    if(absElement > res)
+                        res = absElement;
+                    end
+                end
+            end
         end
     end
     

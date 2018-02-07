@@ -214,27 +214,37 @@ classdef CLinearSystem
             secondSystem = CLinearSystem(U.data,y.data);
             res = secondSystem.tridiagonalBackwardSubstitution();
         end
-        function res = iterativeSolution(obj,type)
+        function res = iterativeSolution(obj,type,initialGuess)
             switch type
                 case 'jacobi'
-                    res = jacobiMethod(obj);
+                    res = jacobiMethod(obj,initialGuess);
                 otherwise
                     error('Unknown decomposition type.');
             end
         end
         function res = jacobiMethod(obj,initialGuess)
             convergenceError = 0.00001;
-            D = obj.A.getDiagonal;
+            initGuess = CVector(initialGuess);
+            msg = ['The size of the initial guess does not agree '...
+                   'with the size of the matrix of coefficients.'];
+            if(obj.b.nElements ~= initGuess.nElements)
+                error(msg)
+            end
+            Dinv = obj.A.getDiagonalInverse;
             L = obj.A.getLower;
             U = obj.A.getUpper;
-            LU = L+U;
-            rhs = obj.b;
-            xK = initialGuess;
+            LplusU = L+U;
+            rhs = CMatrix(obj.b.data);
+            xK = CMatrix(initGuess.data);
             while true
-                xK1 = rhs-LU*xK;
-                if(abs(xK1-xK) < convergenceError)
+                res = Dinv*(rhs-LplusU*xK);
+                err = res-xK;
+                maxErrorMagnitude = err.findMaximumMagnitude;
+                disp(maxErrorMagnitude)
+                if(maxErrorMagnitude < convergenceError)
                     break;
                 end
+                xK = res;
             end
         end
     end
