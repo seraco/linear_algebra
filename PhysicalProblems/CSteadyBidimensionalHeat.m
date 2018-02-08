@@ -13,14 +13,16 @@ classdef CSteadyBidimensionalHeat
         nVerticalDivisions
         lSize
         appliedHeat
+        conductivity
     end
 
     methods
-        function obj = CSteadyBidimensionalHeat(Nx,Ny,L,q)
+        function obj = CSteadyBidimensionalHeat(Nx,Ny,L,q,k)
             obj.nHoritzontalDivisions = Nx;
             obj.nVerticalDivisions = Ny;
             obj.lSize = L;
             obj.appliedHeat = q;
+            obj.conductivity = k;
         end
         function res = coefficientsMatrix(obj)
             deltaXsquared = (obj.lSize/obj.nHoritzontalDivisions)^2;
@@ -49,6 +51,9 @@ classdef CSteadyBidimensionalHeat
                     if(j ~= nHorLeft)
                         res(k,k+nVerLeft) = c1;
                     end
+                    if((j == nHorLeft) && (i>nVerLeft-nVerRight))
+                        res(k,k+nVerRight) = c1;
+                    end
                 end
             end
             kTotalLeft = k;
@@ -70,8 +75,8 @@ classdef CSteadyBidimensionalHeat
             end
         end
         function res = solve(obj)
-            A = coefficientsMatrix(obj);
-            b = obj.appliedHeat*ones(size(A,1),1);
+            A = -coefficientsMatrix(obj);
+            b = obj.appliedHeat/obj.conductivity*ones(size(A,1),1);
             sys = CLinearSystem(A,b);
             res = sys.iterativeSolution('jacobi',0.000001);
         end
