@@ -23,18 +23,32 @@ A = -problem.coefficientsMatrix();
 spy(A);
 
 %% 3)
-Nx = 3;
-Ny = 3;
-a = 1;
-q = 1;
-k = 1;
-problem = CSteadyBidimensionalHeat(Nx,Ny,a,q,k);
-solution = problem.solve();
-leftSolution = solution.data(1:(Nx-1)*(2*Ny-1));
-rightSolution = solution.data((Nx-1)*(2*Ny-1)+1:end);
-leftSolution = reshape(leftSolution,[],Nx-1);
-rightSolution = reshape(rightSolution,[],Nx);
-container = zeros(2*Ny+1,2*Nx+1);
-container(2:end-1,2:Nx) = leftSolution;
-container(Ny+2:end-1,Nx+1:end-1) = rightSolution;
-container(Ny+1:end-1,Nx+1:end-1);
+for i=[5,10,20]
+    Nx = i;
+    Ny = i;
+    a = 1;
+    q = 1;
+    k = 1;
+    problem = CSteadyBidimensionalHeat(Nx,Ny,a,q,k);
+    solution = problem.solve();
+    leftSolution = solution.data(1:(Nx-1)*(2*Ny-1));
+    rightSolution = solution.data((Nx-1)*(2*Ny-1)+1:end);
+    leftSolution = reshape(leftSolution,[],Nx-1);
+    rightSolution = reshape(rightSolution,[],Nx);
+    container = zeros(2*Ny+1,2*Nx+1);
+    container(2:end-1,2:Nx) = leftSolution;
+    container(Ny+2:end-1,Nx+1:end-1) = rightSolution;
+    container = flipud(container);
+    deltaX = a/Nx;
+    deltaY = a/Ny;
+    xVector = 0:deltaX:2*a;
+    yVector = 0:deltaY:2*a;
+    figure
+    hold on
+    [C,h] = contourf(xVector,yVector,container);
+    clabel(C,h);
+    xlabel('x');
+    ylabel('y');
+    title(strcat('Nx=',num2str(i),' Ny=',num2str(i)));
+    hold off
+end
