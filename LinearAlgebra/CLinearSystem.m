@@ -49,10 +49,12 @@ classdef CLinearSystem
         function obj = CLinearSystem(A,b)
             % Summary:  Constructor. Initialises the properties of the object
             %           and checks that the system of equations is valid.
+            %
             % Args:     A
             %               Matrix of coefficients.
             %           b
             %               RHS vector.
+            %
             % Returns:  obj
             %               CLinearSystem object with initilized properties.
             obj.A = CMatrix(A);
@@ -81,6 +83,7 @@ classdef CLinearSystem
             %           coefficients of the system is upper triangular, the
             %           method calculates each unknown of the system from the
             %           bottom to the top.
+            %
             % Returns:  res
             %               Vector of unknowns.
             if(~obj.A.isUpperTriangular)
@@ -100,6 +103,7 @@ classdef CLinearSystem
         function res = tridiagonalBackwardSubstitution(obj)
             % Summary:  The same algorithm as in backwardSubstitution() but
             %           modified to be more efficient for tridiagonal matrices.
+            %
             % Returns:  res
             %               Vector of unknowns.
             if(~obj.A.isUpperTriangular)
@@ -122,6 +126,7 @@ classdef CLinearSystem
             %           coefficients of the system is lower triangular, the
             %           method calculates each unknown of the system from the
             %           top to the bottom.
+            %
             % Returns:  res
             %               Vector of unknowns.
             if(~obj.A.isLowerTriangular)
@@ -141,6 +146,7 @@ classdef CLinearSystem
         function res = tridiagonalForwardSubstitution(obj)
             % Summary:  The same algorithm as in forwardSubstitution() but
             %           modified to be more efficient for tridiagonal matrices.
+            %
             % Returns:  res
             %               Vector of unknowns.
             if(~obj.A.isLowerTriangular)
@@ -161,6 +167,7 @@ classdef CLinearSystem
             %           of partial pivoting avoids roundoff errors and dividing
             %           by zero, which is absolutely necessary when using a
             %           computer to perform the LU factorisation method.
+            %
             % Returns:  P
             %               Permutation matrix.
             %           L
@@ -192,6 +199,7 @@ classdef CLinearSystem
             % Summary:  The growth factor is calculated here. The maximum
             %           magnitude is found for both A and U matrices and their
             %           quotient gives the growth factor.
+            %
             % Returns:  res
             %               Growth factor.
             [~,~,U] = luWithPartialPivoting(obj);
@@ -217,8 +225,10 @@ classdef CLinearSystem
             %           decomposition, Cholesky factorization) with forward and
             %           backward substitution methods to get the vector of
             %           unknowns.
+            %
             % Args:     type
             %               Type of decomposition of A for the direct solution.
+            %
             % Returns:  res
             %               Vector of unknowns.
             rhs = CMatrix(obj.b.data);
@@ -241,6 +251,7 @@ classdef CLinearSystem
             % Summary:  Cholesky decomposition is a more efficient way to
             %           factorize A matrix in LU for symmetric positive definite
             %           matrices.
+            %
             % Returns:  L
             %               Lower triangular matrix from the decomposition.
             %           U
@@ -281,6 +292,7 @@ classdef CLinearSystem
             %           algorithm can be checked at
             %           http://www.cs.cornell.edu/courses/cs4220/2014sp/CVLBook/chap7.pdf
             %           in chapter 7.3.2.
+            %
             % Returns:  L
             %               Lower triangular matrix from the decomposition.
             %           U
@@ -317,6 +329,7 @@ classdef CLinearSystem
         function res = tridiagonalDirectSolution(obj)
             % Summary:  Direct solution improved for tridiagonal matrices with
             %           Cholesky factorization.
+            %
             % Returns:  res
             %               Vector of unknowns.
             [L,U] = tridiagonalCholesky(obj);
@@ -328,6 +341,7 @@ classdef CLinearSystem
         function res = iterativeSolution(obj,type,tolerance)
             % Summary:  This method gives the iterative solution of the system
             %           of equations.
+            %
             % Returns:  res
             %               Vector of unknowns.
             switch type
@@ -342,8 +356,10 @@ classdef CLinearSystem
             %           in its lower, diagonal and upper parts, and using sparse
             %           operations to operate more efficiently in matrices where
             %           most of the entries are zero.
+            %
             % Args:     tolerance
             %               Tolerance margin for convergence.
+            %
             % Returns:  res
             %               Vector of unknowns.
             convergenceError = tolerance;
@@ -378,10 +394,12 @@ classdef CLinearSystem
         function res = gaussVector(matrix,k)
             % Summary:  Returns the Gauss vector of matrix for the k step of
             %           Gaussian elimination.
+            %
             % Args:     matrix
             %               Matrix at k step of Gaussian elimination.
             %           k
             %               Step of Gaussian elimination.
+            %
             % Returns:  res
             %               Gauss vector.
             res = zeros(matrix.mRows-k,1);
