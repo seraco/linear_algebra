@@ -11,7 +11,7 @@ addpath('../LinearAlgebra','../PhysicalProblems');
 
 %% 1)
 problem = CSteadyBidimensionalHeat(10,10,1,1,1);
-A = -problem.coefficientsMatrix();
+A = -problem.coefficientsMatrixLshapeRegion();
 eigenvalues = eig(A);
 [lower,upper] = bandwidth(A);
 bwdth = max(lower,upper);
@@ -19,7 +19,7 @@ sizeOfA = size(A);
 
 %% 2)
 problem = CSteadyBidimensionalHeat(5,5,1,1,1);
-A = -problem.coefficientsMatrix();
+A = -problem.coefficientsMatrixLshapeRegion();
 spy(A);
 
 %% 3)
