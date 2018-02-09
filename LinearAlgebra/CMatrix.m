@@ -79,9 +79,9 @@ classdef CMatrix
             % Summary:  Overloading of + operator.
             %
             % Args:     obj1
-            %               CMatrix object at on the left of operator +.
+            %               CMatrix object on the left of operator +.
             %           obj2
-            %               CMatrix object at on the right of operator +.
+            %               CMatrix object on the right of operator +.
             %
             % Returns:  res
             %               CMatrix object with summed data entries.
@@ -98,9 +98,9 @@ classdef CMatrix
             % Summary:  Overloading of - operator.
             %
             % Args:     obj1
-            %               CMatrix object at on the left of operator -.
+            %               CMatrix object on the left of operator -.
             %           obj2
-            %               CMatrix object at on the right of operator -.
+            %               CMatrix object on the right of operator -.
             %
             % Returns:  res
             %               CMatrix object with substracted data entries.
@@ -117,9 +117,9 @@ classdef CMatrix
             % Summary:  Overloading of * operator.
             %
             % Args:     obj1
-            %               CMatrix object at on the left of operator *.
+            %               CMatrix object on the left of operator *.
             %           obj2
-            %               CMatrix object at on the right of operator *.
+            %               CMatrix object on the right of operator *.
             %
             % Returns:  res
             %               CMatrix object obtained after multiplication.
